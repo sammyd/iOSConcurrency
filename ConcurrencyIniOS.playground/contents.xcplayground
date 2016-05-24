@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<playground version='5.0' target-platform='ios' display-mode='rendered'>
-    <timeline fileName='timeline.xctimeline'/>
+<playground version='6.0' target-platform='ios' display-mode='raw' executeOnSourceChanges='false'>
+    <pages>
+        <page name='NSOperation'/>
+        <page name='NSOperationQueue'/>
+        <page name='NSOperation Async'/>
+        <page name='NSOperation Dependencies'/>
+        <page name='NSOperation in Practice'/>
+        <page name='Grand Central Dispatch'/>
+    </pages>
 </playground>
