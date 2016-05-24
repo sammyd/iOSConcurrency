@@ -1,5 +1,6 @@
 import UIKit
 
+
 public class TiltShiftOperation: NSOperation {
   public var inputImage: UIImage?
   public var outputImage: UIImage?
@@ -16,6 +17,23 @@ public class TiltShiftOperation: NSOperation {
   }
 }
 
+public class ImageOutputOperation: NSOperation {
+  public var inputImage: UIImage?
+  public var completion: ((UIImage?) -> ())?
+  
+  public override func main() {
+    guard let completion = completion else { return }
+    if let dependencyImageProvider = dependencies
+      .filter({ $0 is FilterDataProvider })
+      .first as? FilterDataProvider
+      where inputImage == .None {
+      inputImage = dependencyImageProvider.outputImage
+    }
+
+    completion(inputImage)
+  }
+}
+
 
 
 public protocol FilterDataProvider {
@@ -23,6 +41,10 @@ public protocol FilterDataProvider {
 }
 
 extension ImageLoadOperation: FilterDataProvider {
+  
+}
+
+extension TiltShiftOperation: FilterDataProvider {
   
 }
 
