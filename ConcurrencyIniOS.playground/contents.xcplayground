@@ -7,5 +7,7 @@
         <page name='NSOperation Dependencies'/>
         <page name='NSOperation in Practice'/>
         <page name='Grand Central Dispatch'/>
+        <page name='GCD Groups'/>
+        <page name='GCD Barrier'/>
     </pages>
 </playground>
