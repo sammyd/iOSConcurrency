@@ -14,12 +14,16 @@ import XCPlayground
 //: Create a new animation function on `UIView` that wraps an existing animation function, but now takes a dispatch group as well.
 extension UIView {
   static func animateWithDuration(duration: NSTimeInterval, animations: () -> Void, group: dispatch_group_t, completion: ((Bool) -> Void)?) {
-    //TODO: provide implementation
+    dispatch_group_enter(group)
+    animateWithDuration(duration, animations: animations) { (success) in
+      completion?(success)
+      dispatch_group_leave(group)
+    }
   }
 }
 
 //: Create a disptach group with `dispatch_group_create()`:
-//TODO: create a dispatch group
+let animationGroup = dispatch_group_create()
 
 //: The animation uses the following views
 let view = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
@@ -31,22 +35,25 @@ view.addSubview(box)
 XCPlaygroundPage.currentPage.liveView = view
 
 //: The following completely independent animations now use the dispatch group so that you can determine when all of the animations have completed:
-//TODO: update the following to use the new method with dispatch group
+
 UIView.animateWithDuration(1, animations: {
   box.center = CGPoint(x: 150, y: 150)
-  }, completion: {
+  }, group: animationGroup, completion: {
     _ in
     UIView.animateWithDuration(2, animations: {
       box.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_4))
-      }, completion: nil)
+      }, group: animationGroup, completion: nil)
 })
 
 UIView.animateWithDuration(4, animations: { () -> Void in
   view.backgroundColor = UIColor.blueColor()
-  }, completion: nil)
+  }, group: animationGroup, completion: nil)
 
 
 //: `dispatch_group_notify()` allows you to specify a block that will be executed only when all the blocks in that dispatch group have completed:
-//TODO: use dispatch_group_notify() to find when all animations are complete
+dispatch_group_notify(animationGroup, dispatch_get_main_queue()) { 
+  print("Animations Completed!")
+  XCPlaygroundPage.currentPage.finishExecution()
+}
 
 //: [➡ Thread safety with GCD Barriers](@next)
