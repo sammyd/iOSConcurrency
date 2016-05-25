@@ -81,4 +81,14 @@ dispatch_group_notify(threadSafeNameGroup, dispatch_get_main_queue()) {
   XCPlaygroundPage.currentPage.finishExecution()
 }
 
-
+/*:
+ ---
+ Hope you enjoyed this playground introduction to concurrency on iOS. Any questions please feel free to shout at me on twitter — I'm [@iwantmyrealname](https://twitter.com/iwantmyrealname).
+ 
+ —sam
+ 
+ 
+ ![Razeware](razeware_64.png)
+ 
+ © Razeware LLC, 2016
+ */
