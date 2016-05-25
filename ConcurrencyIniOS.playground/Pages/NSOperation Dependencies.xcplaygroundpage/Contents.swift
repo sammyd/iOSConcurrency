@@ -45,13 +45,7 @@ class TiltShiftOperation: NSOperation {
   var outputImage: UIImage?
   
   override func main() {
-    if let dependencyImageProvider = dependencies
-      .filter({ $0 is FilterDataProvider })
-      .first as? FilterDataProvider
-      where inputImage == .None {
-      inputImage = dependencyImageProvider.outputImage
-    }
-    
+    // TODO: search dependencies for an image
     outputImage = tiltShift(inputImage)
   }
 }
@@ -59,12 +53,10 @@ class TiltShiftOperation: NSOperation {
 
 //: Rather than coding directly to concrete implementations, define a protocol that represents _"an object that can provide data to an image filter"_. This makes the code that searches dependencies far less brittle.
 protocol FilterDataProvider {
-  var outputImage: UIImage? { get }
+  //TODO: provide protocol spec
 }
 
-extension ImageLoadOperation: FilterDataProvider {
-  
-}
+//TODO: ImageLoadOperation should conform to FilterDataProvider
 
 
 /*:
@@ -74,10 +66,7 @@ extension ImageLoadOperation: FilterDataProvider {
  Heed all the usual warnings about custom operators. This is a situation where they can offer genuine clarity, but that isn't often the case.
  */
 infix operator |> { associativity left precedence 150 }
-func |>(lhs: NSOperation, rhs: NSOperation) -> NSOperation {
-  rhs.addDependency(lhs)
-  return rhs
-}
+// TODO: provide implemetation of custom operator
 
 
 //: Create the relevant operations
@@ -88,12 +77,12 @@ let filter = TiltShiftOperation()
 imageLoad.inputName = "train_day.jpg"
 
 //: And set the dependency chain
-imageLoad |> filter
+//TODO: set the dependency chain
 
 //: Add both operations to the operation queue
 let queue = NSOperationQueue()
 duration {
-  queue.addOperations([imageLoad, filter], waitUntilFinished: true)
+  //TODO: Add both operations to the queue
 }
 
 

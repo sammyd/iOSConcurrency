@@ -35,12 +35,10 @@ class AsyncOperation: NSOperation {
   
   var state = State.Ready {
     willSet {
-      willChangeValueForKey(newValue.keyPath)
-      willChangeValueForKey(state.keyPath)
+      //TODO: KVO notifications
     }
     didSet {
-      didChangeValueForKey(oldValue.keyPath)
-      didChangeValueForKey(state.keyPath)
+      //TODO: KVO notifications
     }
   }
 }
@@ -71,13 +69,8 @@ extension AsyncOperation {
   }
   
   override func start() {
-    if cancelled {
-      state = .Finished
-      return
-    }
-    
-    main()
-    state = .Executing
+    // TODO: provide override
+    state = .Finished
   }
   
   override func cancel() {
@@ -95,10 +88,7 @@ class ImageLoadOperation: AsyncOperation {
   
   override func main() {
     duration {
-      simulateNetworkImageLoadAsync(self.inputName, callback: { (image) in
-        self.outputImage = image
-        self.state = .Finished
-      })
+      // TODO: provide implementation
     }
   }
 }

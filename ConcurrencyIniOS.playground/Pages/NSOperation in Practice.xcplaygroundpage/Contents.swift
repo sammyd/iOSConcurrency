@@ -23,23 +23,17 @@ tableView.rowHeight = 250
 //: `ImageProvider` is a class that is responsible for loading and processing an image. It creates the relevant operations, chains them together, pops them on a queue and then ensures that the output is passed back appropriately
 class ImageProvider {
   
-  let queue = NSOperationQueue()
+  //TODO: Provide a queue
   
   init(imageName: String, completion: (UIImage?) -> ()) {
-    let loadOp = ImageLoadOperation()
-    let tiltShiftOp = TiltShiftOperation()
-    let outputOp = ImageOutputOperation()
-    
-    loadOp.inputName = imageName
-    outputOp.completion = completion
-    
-    loadOp |> tiltShiftOp |> outputOp
-    
-    queue.addOperations([loadOp, tiltShiftOp, outputOp], waitUntilFinished: false)
+    //TODO: replace implementation with an asynchronous one
+    let rawImage = simulateNetworkImageLoad(imageName)
+    let filteredImage = tiltShift(rawImage)
+    completion(filteredImage)
   }
   
   func cancel() {
-    queue.cancelAllOperations()
+    // TODO: provide implementation
   }
 }
 
@@ -69,6 +63,7 @@ extension DataSource: UITableViewDelegate {
     if let cell = cell as? ImageCell {
       let provider = ImageProvider(imageName: imageNames[indexPath.row], completion: { (image) in
           cell.transitionToImage(image)
+          self.imageProviders.removeValueForKey(indexPath)
       })
       imageProviders[indexPath] = provider
     }

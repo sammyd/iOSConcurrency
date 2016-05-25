@@ -36,12 +36,11 @@ var outputImage: UIImage?
 
 //: You can use the `NSBlockOperation` subclass of `NSOperation` to easily wrap some functionality.
 
-let myFirstOperation = NSBlockOperation { 
-  outputImage = tiltShift(image)
-}
+//TODO: NSBlockOperation
 
 //: You can then execute this operation with the `start()` method:
-myFirstOperation.start()
+//TODO: start
+
 
 outputImage
 
@@ -52,16 +51,12 @@ outputImage
  When subclassing, create properties for input and output objects, and then override the `main()` method to perform the work.
  */
 class TiltShiftOperation: NSOperation {
-  var inputImage: UIImage?
-  var outputImage: UIImage?
+  //TODO: add properties and override main()
   
-  override func main() {
-    outputImage = tiltShift(inputImage)
-  }
 }
 
 let mySecondOperation = TiltShiftOperation()
-mySecondOperation.inputImage = image
+// TODO: set input image
 
 
 /*:
@@ -73,7 +68,7 @@ mySecondOperation.inputImage = image
  */
 mySecondOperation.start()
 
-mySecondOperation.outputImage
+// TODO: view output image
 
 
 //: [➡NSOperationQueue](NSOperationQueue)

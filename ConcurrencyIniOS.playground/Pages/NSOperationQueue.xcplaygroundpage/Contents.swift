@@ -28,7 +28,7 @@ class TiltShiftOperation: NSOperation {
 
 
 //: Creating a queue is simple - using the default constructor:
-let queue = NSOperationQueue()
+//TODO: Create a queue
 
 var operations = [TiltShiftOperation]()
 
@@ -47,7 +47,7 @@ duration {
     op.inputImage = image
     operations += [op]
     
-    queue.addOperation(op)
+    // TODO: add operations to the queue
   }
 }
 
@@ -58,10 +58,10 @@ duration {
  \
  Try changing the value of this property below to see how it affects the time it takes for the queue to finish processing all operations
  */
-queue.maxConcurrentOperationCount = 2
+// TODO: look at max operation count
 
 duration {
-  queue.waitUntilAllOperationsAreFinished()
+  // TODO: Wait until queue has finished
 }
 
 
