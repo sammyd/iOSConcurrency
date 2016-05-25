@@ -11,7 +11,8 @@ XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
  ### Using a Global Queue
  iOS has some global queues, where every task eventually ends up being executed. You can use these directly. You need to use the main queue for UI updates.
  */
-//TODO: Create a couple of queues
+let queue = dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)
+let mainQueue = dispatch_get_main_queue()
 
 //: ### Creating your own Queue
 //: Creating your own queues allow you to specify a label, which is super-useful for debugging.
@@ -28,15 +29,16 @@ func currentQueueName() -> String? {
   return String(CString: label, encoding: NSUTF8StringEncoding)
 }
 
-//TODO: use the currentQueueName() function
+let currentQueue = currentQueueName()
+print(currentQueue)
 
 
 //: ### Dispatching work asynchronously
 //: Send some work off to be done, and then continue on—don't await a result
 print("=== Sending asynchronously to Worker Queue ===")
-//TODO: Async dispatch the next line
-print("=== ASYNC:: Executing on \(currentQueueName()) ===")
-
+dispatch_async(workerQueue) { 
+  print("=== ASYNC:: Executing on \(currentQueueName()) ===")
+}
 print("=== Completed sending asynchronously to worker queue ===\n")
 
 
@@ -44,8 +46,10 @@ print("=== Completed sending asynchronously to worker queue ===\n")
 //: ### Dispatching work synchronously
 //: Send some work off and wait for it to complete before continuing (here be more dragons)
 print("=== Sending SYNChronously to Worker Queue ===")
-//TODO: sync dispatch the following line:
-print("=== SYNC:: Executing on \(currentQueueName()) ===")
+dispatch_sync(workerQueue) { 
+  print("=== SYNC:: Executing on \(currentQueueName()) ===")
+}
+
 
 print("=== Completed sending synchronously to worker queue ===\n")
 
@@ -59,14 +63,20 @@ func doComplexWork() {
 }
 
 print("=== Starting Serial ===")
-//TODO: Dispatch to a serial queue
+dispatch_async(workerQueue, doComplexWork)
+dispatch_async(workerQueue, doComplexWork)
+dispatch_async(workerQueue, doComplexWork)
+dispatch_async(workerQueue, doComplexWork)
 
 sleep(5)
 
-//TODO: Create a concurrent queue
+let concurrentQueue = dispatch_queue_create("com.raywenderlich.concurrent", DISPATCH_QUEUE_CONCURRENT)
 
 print("\n=== Starting concurrent ===")
-// TODO: dispatch to concurrent
+dispatch_async(concurrentQueue, doComplexWork)
+dispatch_async(concurrentQueue, doComplexWork)
+dispatch_async(concurrentQueue, doComplexWork)
+dispatch_async(concurrentQueue, doComplexWork)
 
 sleep(5)
 
