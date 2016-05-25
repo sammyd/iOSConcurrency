@@ -1,12 +1,12 @@
-//: [Previous](@previous)
+//: [⬅ GCD Groups](@previous)
 
 import Foundation
 import XCPlayground
 
 XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
 
-//: # GCD Barriers
-//: When you're using asynchronous calls then you need to conside thread safety.
+//: ## GCD Barriers
+//: When you're using asynchronous calls you need to conside thread safety.
 //: Consider the following object:
 
 let nameChangingPerson = Person(firstName: "Alison", lastName: "Anderson")
@@ -40,7 +40,7 @@ dispatch_group_wait(nameChangeGroup, DISPATCH_TIME_FOREVER)
 //: __Result:__ `nameChangingPerson` has been left in an inconsistent state.
 
 
-//: ## Dispatch Barrier
+//: ### Dispatch Barrier
 //: A barrier allows you add a task to a concurrent queue that will be run in a serial fashion. i.e. it will wait for the currently queued tasks to complete, and prevent any new ones starting.
 
 class ThreadSafePerson: Person {
@@ -62,6 +62,7 @@ class ThreadSafePerson: Person {
   }
 }
 
+
 print("\n=== Threadsafe ===")
 
 let threadSafeNameGroup = dispatch_group_create()
@@ -81,4 +82,3 @@ dispatch_group_notify(threadSafeNameGroup, dispatch_get_main_queue()) {
 }
 
 
-//: [Next](@next)
