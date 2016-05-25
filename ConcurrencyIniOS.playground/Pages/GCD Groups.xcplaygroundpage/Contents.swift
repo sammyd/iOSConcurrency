@@ -1,8 +1,17 @@
-//: [Previous](@previous)
-
+//: [⬅ Grand Central Dispatch](@previous)
+/*:
+ ## Dispatch Groups
+ 
+ Dispatch groups are a feature of GCD that allow you to perform an action when a group of GCD operations has completed. This offers a really simple way to keep track of the progress of a set of operations, rather than having to implement something to keep track yourself.
+ 
+ When you're responsible for dispatching blocks yourself, it's really easy to disptach a block into a particular dispatch group, using the `dispatch_group_*()` family of functions, but the real power comes from being able to wrap existing async functions in dispatch groups.
+ 
+ In this demo you'll see how you can use dispatch groups to run an action when a set of disparate animations has completed.
+ */
 import UIKit
 import XCPlayground
 
+//: Create a new animation function on `UIView` that wraps an existing animation function, but now takes a dispatch group as well.
 extension UIView {
   static func animateWithDuration(duration: NSTimeInterval, animations: () -> Void, group: dispatch_group_t, completion: ((Bool) -> Void)?) {
     dispatch_group_enter(group)
@@ -14,7 +23,7 @@ extension UIView {
   }
 }
 
-//: Use the following dispatch group:
+//: Create a disptach group with `dispatch_group_create()`:
 let animationGroup = dispatch_group_create()
 
 //: The animation uses the following views
@@ -26,7 +35,7 @@ view.addSubview(box)
 
 XCPlaygroundPage.currentPage.liveView = view
 
-//: And then rewrite the following animation to be notified when all animations complete:
+//: The following completely independent animations now use the dispatch group so that you can determine when all of the animations have completed:
 UIView.animateWithDuration(1, animations: {
   box.center = CGPoint(x: 150, y: 150)
   }, group: animationGroup, completion: {
@@ -41,12 +50,10 @@ UIView.animateWithDuration(4, animations: { () -> Void in
   }, group: animationGroup, completion: nil)
 
 
-//: Should only print once all the animations are complete
+//: `dispatch_group_notify()` allows you to specify a block that will be executed only when all the blocks in that dispatch group have completed:
 dispatch_group_notify(animationGroup, dispatch_get_main_queue()) {
   print("Animations completed!")
-  //TODO: Uncomment the following line once you've completed implemention
   XCPlaygroundPage.currentPage.finishExecution()
 }
 
-
-//: [Next](@next)
+//: [➡ Thread safety with GCD Barriers](@next)
