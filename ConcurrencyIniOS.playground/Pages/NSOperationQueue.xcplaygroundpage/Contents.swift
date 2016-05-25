@@ -1,4 +1,13 @@
-//: [Previous](@previous)
+/*:
+ [NSOperation](@previous)
+
+ ## NSOperationQueue
+ 
+ There's not a lot of point of carefully wrapping up complex functionality in `NSOperation` object if you then have to call `start()` on each of them to actually begin execution.
+ 
+ */
+
+
 
 import UIKit
 
@@ -39,4 +48,4 @@ output
 
 
 
-//: [Next](@next)
+//: [NSOperation Async](@next)
