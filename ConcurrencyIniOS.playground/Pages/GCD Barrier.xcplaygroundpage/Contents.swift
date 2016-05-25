@@ -45,17 +45,19 @@ dispatch_group_wait(nameChangeGroup, DISPATCH_TIME_FOREVER)
 
 class ThreadSafePerson: Person {
   
-  //TODO: create a queue
+  let isolationQueue = dispatch_queue_create("com.raywenderlich.person.isolation", DISPATCH_QUEUE_CONCURRENT)
   
   override func changeName(firstName firstName: String, lastName: String) {
-    //TODO: make this a barrier
-    super.changeName(firstName: firstName, lastName: lastName)
+    dispatch_barrier_async(isolationQueue) { 
+      super.changeName(firstName: firstName, lastName: lastName)
+    }
   }
   
   override var name: String {
     var result = ""
-    //TODO: put this on a queue
-    result = super.name
+    dispatch_sync(isolationQueue) { 
+      result = super.name
+    }
     return result
   }
 }
